@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Admin Dashboard</title>
+    {% load static %}
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <link rel = 'stylesheet' href = "{% static 'first_app/css/navbar.css' %}">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+  </head>
+  <body>
+    <nav class="navbar navbar-default navbar-fixed-top">
+      <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand">User Dashboard</a>
+        </div>
+        <!-- Collect the nav links, forms, and other content for toggling -->
+         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+           <ul class="nav navbar-nav">
+             <li class="active"><a href="/render_dashboard">Dashboard <span class="sr-only">(current)</span></a></li>
+             <li><a href="/render_edit_profile">Profile</a></li>
+           </ul>
+           <ul class="nav navbar-nav navbar-right">
+             <li><a href="/logout">Log off </a></li>
+           </ul>
+         </div><!-- /.navbar-collapse -->
+      </div>
+    </nav>
+
+    <div class = 'container'>
+      <form action = '/render_add_new'>
+        {%csrf_token%}
+        <input class = 'btn btn-primary' type = "submit" value="Add new">
+      </form><br><br>
+
+      <h2>Manage Users</h2>
+      <table class = 'table table-hover'>
+        <tr>
+          <th>ID</th>
+          <th>Name</th>
+          <th>email</th>
+          <th>created_at</th>
+          <th>user_level</th>
+          <th>actions</th>
+        </tr>
+        {%for user in users%}
+        <tr>
+          <td>{{user.id}}</td>
+          <td><a href='/render_user_page/{{user.id}}'>{{user.first_name}} {{user.last_name}}</a></td>
+          <td>{{user.email}}</td>
+          <td>{{user.created_at}}</td>
+          <td>{{user.user_level}}</td>
+          <td><a href = '/render_edit_user/{{user.id}}'>edit</a></td>
+        </tr>
+        {%endfor%}
+      </table>
+    </div>
+  </body>
+</html>

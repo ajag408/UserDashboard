@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>User Info</title>
+    {% load static %}
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <link rel = 'stylesheet' href = "{% static 'first_app/css/navbar.css' %}">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+  </head>
+  <body>
+    <nav class="navbar navbar-default navbar-fixed-top">
+      <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand">User Dashboard</a>
+        </div>
+        <!-- Collect the nav links, forms, and other content for toggling -->
+         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+           <ul class="nav navbar-nav">
+             <li><a href="/render_dashboard">Dashboard </a></li>
+             <li><a href="/render_edit_profile">Profile</a></li>
+           </ul>
+           <ul class="nav navbar-nav navbar-right">
+             <li><a href="/logout">Log off </a></li>
+           </ul>
+         </div><!-- /.navbar-collapse -->
+      </div>
+    </nav>
+
+    <div class = 'container'>
+      <h1>{{user_profile.first_name}} {{user_profile.last_name}}</h1><br>
+      <p>Registered at: {{user_profile.created_at}}</p>
+      <p>User ID: #{{user_profile.id}}</p>
+      <p>Email address: {{user_profile.email}}</p>
+      <p>Description: {{user_profile.description}}</p><br>
+
+      <form action = '/post_message/{{user_profile.id}}' method='POST'>
+        {%csrf_token%}
+        <p><b>Leave a message for {{user_profile.first_name}}!:</b></p>
+        <textarea name="message" rows="10" cols="100"></textarea><br>
+        <input class = 'btn btn-success' type = 'submit' value = 'Post'>
+      </form><br>
+
+      {%for message in user_profile.user_profile_messages.all%}
+            <p>{{message.message_user_id.first_name}} {{message.message_user_id.last_name}} wrote    {{message.created_at}}<p>
+            <p>{{message.message}}</p>
+            <p><b>Comments</b></p>
+            {%for comment in message.message_comments.all%}
+              <p>{{comment.comment_user_id.first_name}} {{comment.comment_user_id.last_name}} wrote   {{comment.created_at}}</p>
+              <p>{{comment.comment}}</p>
+            {%endfor%}
+            <form action = '/post_comment/{{message.id}}/{{user_profile.id}}' method='POST'>
+              {%csrf_token%}
+              <textarea name="comment" rows="7" cols="20" value = 'Post message'></textarea><br>
+              <input class = 'btn btn-success' type = 'submit' value = 'Post'>
+            </form><br>
+
+      {%endfor%}
+    </div>
+  </body>
+</html>
