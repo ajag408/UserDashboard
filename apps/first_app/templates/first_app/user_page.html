@@ -2,7 +2,7 @@
 <html>
   <head>
     <meta charset="utf-8">
-    <title>User Info</title>
+    <title>{{user_profile.first_name}}'s Info</title>
     {% load static %}
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
     <link rel = 'stylesheet' href = "{% static 'first_app/css/navbar.css' %}">
@@ -25,7 +25,7 @@
         <!-- Collect the nav links, forms, and other content for toggling -->
          <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
            <ul class="nav navbar-nav">
-             <li><a href="/render_dashboard">Dashboard </a></li>
+             <li><a href="/my-dashboard">Dashboard </a></li>
              <li><a href="/render_edit_profile">Profile</a></li>
            </ul>
            <ul class="nav navbar-nav navbar-right">
@@ -50,18 +50,20 @@
       </form><br>
 
       {%for message in user_profile.user_profile_messages.all%}
-            <p>{{message.message_user_id.first_name}} {{message.message_user_id.last_name}} wrote    {{message.created_at}}<p>
+            <p style = "color: blue">{{message.message_user_id.first_name}} {{message.message_user_id.last_name}} wrote    {{message.created_at}}<p>
             <p>{{message.message}}</p>
-            <p><b>Comments</b></p>
-            {%for comment in message.message_comments.all%}
-              <p>{{comment.comment_user_id.first_name}} {{comment.comment_user_id.last_name}} wrote   {{comment.created_at}}</p>
-              <p>{{comment.comment}}</p>
-            {%endfor%}
-            <form action = '/post_comment/{{message.id}}/{{user_profile.id}}' method='POST'>
-              {%csrf_token%}
-              <textarea name="comment" rows="7" cols="20" value = 'Post message'></textarea><br>
-              <input class = 'btn btn-success' type = 'submit' value = 'Post'>
-            </form><br>
+            <div style ="text-indent: 10%;">
+              <p><b>Comments</b></p>
+              {%for comment in message.message_comments.all%}
+                <p style = "color: red">{{comment.comment_user_id.first_name}} {{comment.comment_user_id.last_name}} wrote   {{comment.created_at}}</p>
+                <p>{{comment.comment}}</p>
+              {%endfor%}
+              <form action = '/post_comment/{{message.id}}/{{user_profile.id}}' method='POST'>
+                {%csrf_token%}
+                <textarea name="comment" rows="7" cols="70" value = 'Post message'></textarea><br>
+                <div style ="text-indent: 10%;"><input class = 'btn btn-success' type = 'submit' value = 'Post'></div>
+              </form><br>
+            </div>
 
       {%endfor%}
     </div>

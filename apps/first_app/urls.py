@@ -3,8 +3,8 @@ from . import views
 
 urlpatterns = [
     url(r'^$', views.home),
-    url(r'^render_signin$', views.render_signin),
-    url(r'^render_register$', views.render_register),
+    url(r'^sign-in$', views.render_signin),
+    url(r'^register$', views.render_register),
     url(r'^reg$', views.validate_register),
     url(r'^login$', views.login),
     url(r'^logout$', views.logout),
@@ -14,7 +14,7 @@ urlpatterns = [
     url(r'^change_pw$', views.change_pw),
     url(r'^admin_change_pw/(?P<user_id>\d+)$', views.admin_change_pw),
     url(r'^edit_description$', views.edit_description),
-    url(r'^render_dashboard$', views.render_dashboard),
+    url(r'^my-dashboard$', views.render_dashboard),
     url(r'^render_add_new$', views.render_add_new),
     url(r'^add_new$', views.add_new),
     url(r'^render_edit_user/(?P<user_id>\d+)$', views.render_edit_user),

@@ -4,7 +4,6 @@ import bcrypt
 from django.contrib import messages
 # Create your views here.
 def home(request):
-
     return render(request, 'first_app/home.html')
 
 def render_signin(request):
@@ -17,52 +16,52 @@ def validate_register(request):
     check1 = User.objects.check_first_name(request.POST['first_name'])
     if check1 is False:
         messages.error(request, "First name: required; no fewer than 2 characters; letters only")
-        return redirect('/render_register')
+        return redirect('/register')
 
     check2 = User.objects.check_last_name(request.POST['last_name'])
     if check2 is False:
         messages.error(request, "Last name: required; no fewer than 2 characters; letters only")
-        return redirect('/render_register')
+        return redirect('/register')
 
     check3 = User.objects.check_email_1(request.POST['email'])
     if check3 is False:
         messages.error(request, "Email: Required; Valid Format")
-        return redirect('/render_register')
+        return redirect('/register')
 
     check6 = User.objects.check_email_2(request.POST['email'])
     if check6 is False:
         messages.error(request, 'email is already taken')
-        return redirect('/render_register')
+        return redirect('/register')
 
     check4 = User.objects.check_password_1(request.POST['password'])
     if check4 is False:
         messages.error(request, "Password: Required; No fewer than 8 characters in length")
-        return redirect('/render_register')
+        return redirect('/register')
 
     check5 = User.objects.check_password_2(request.POST['password'], request.POST['pconf'])
     if check5 is False:
         messages.error(request, "Password must match password confirmation")
-        return redirect('/render_register')
+        return redirect('/register')
 
     register = User.objects.register(request.POST['first_name'],request.POST['last_name'],request.POST['email'],request.POST['password'],request.POST['pconf'])
     if register is False:
         messages.error(request, "User already exists!")
-        return redirect('/render_register')
+        return redirect('/register')
 
     if register is True:
         this_user = User.objects.get(email = request.POST['email'])
         request.session['user'] = this_user.id
-        return redirect('/render_dashboard')
+        return redirect('/my-dashboard')
 
 def login(request):
     login = User.objects.login(request.POST['email'],request.POST['password'])
     if login is True:
         this_user = User.objects.get(email = request.POST['email'])
         request.session['user'] = this_user.id
-        return redirect('/render_dashboard')
+        return redirect('/my-dashboard')
     else:
         messages.error(request, "Log-in failed: check email and password")
-        return redirect('/render_signin')
+        return redirect('/sign-in')
 
 def logout(request):
     if 'user' in request.session:
@@ -92,7 +91,7 @@ def add_new(request):
     if register is False:
         return redirect('/render_add_new')
     if register is True:
-        return redirect('/render_dashboard')
+        return redirect('/my-dashboard')
 
 def render_edit_profile(request):
     context = {
