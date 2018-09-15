@@ -168,3 +168,5 @@ def post_message(request, user_profile_id):
 def post_comment(request, message_id, user_profile_id):
     Comment.objects.create(message_id = Message.objects.get(id = message_id), comment_user_id = User.objects.get(id = request.session['user']), comment= request.POST['comment'])
     return redirect('/render_user_page/' + str(user_profile_id))
+
+# def delete_user(request, )

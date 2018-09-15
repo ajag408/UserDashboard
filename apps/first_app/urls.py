@@ -21,4 +21,5 @@ urlpatterns = [
     url(r'^render_user_page/(?P<user_id>\d+)$', views.render_user_page),
     url(r'^post_message/(?P<user_profile_id>\d+)$', views.post_message),
     url(r'^post_comment/(?P<message_id>\d+)/(?P<user_profile_id>\d+)$', views.post_comment)
+    # url(r'^delete_user/(?P<user_id>\d+)$', views.delete_user)
 ]

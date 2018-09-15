@@ -71,13 +71,14 @@ class UserManager(models.Manager):
         query_p = User.objects.filter(email=email).values('pw_hash').annotate(Count('pw_hash'))
         email_check = False
         password_check = False
-        if EMAIL_REGEX.match(email) and query_e[0]['email'] == email:
-            email_check = True
-            check_pw = query_p[0]['pw_hash']
-            password = password.encode()
-            check_pw = check_pw.encode()
-            if bcrypt.hashpw(password, check_pw) == check_pw:
-                password_check = True
+        if EMAIL_REGEX.match(email) and len(query_e) > 0:
+            if query_e[0]['email'] == email:
+                email_check = True
+                check_pw = query_p[0]['pw_hash']
+                password = password.encode()
+                check_pw = check_pw.encode()
+                if bcrypt.hashpw(password, check_pw) == check_pw:
+                    password_check = True
         if email_check and password_check:
             return True
 
